@@ -204,7 +204,7 @@ var GameState = {
         //  An explosion pool
     explosions = game.add.group();
     explosions.createMultiple(3, 'kaboom');
-    explosions.forEach(setupInvader, this);
+    explosions.forEach(setupFruitExplosion, this);
 
 
   },
@@ -276,7 +276,7 @@ function fruitCatchHandler(player, fruit){
 
   if(fruit.value === -5){
     var explosion = explosions.getFirstExists(false);
-    explosion.reset(player.body.x, player.body.y);
+    explosion.reset(fruit.body.x, fruit.body.y);
     explosion.play('kaboom', 30, false, true);  console.log("fruit in collision", fruit);
   }
 
@@ -291,11 +291,11 @@ function fruitNoBounced(player, fruit){
   return(!fruit.hasBounced);
 }
 
-function setupInvader (invader) {
+function setupFruitExplosion (fruit) {
 
-    invader.anchor.x = 0.5;
-    invader.anchor.y = 0.5;
-    invader.animations.add('kaboom');
+    fruit.anchor.x = 0.5;
+    fruit.anchor.y = 0.5;
+    fruit.animations.add('kaboom');
 
 }
 
