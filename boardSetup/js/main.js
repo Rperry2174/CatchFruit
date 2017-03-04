@@ -174,13 +174,13 @@ var GameState = {
     // game.physics.arcade.gravity.y = 100;
 
 
-    //setup score texts
-    kirbyScoreText = game.add.text(16, 350, 'Kirby: 0', { fontSize: '14px', fill: '#000' });
-
-
     kirby = new Player(game, game.world.centerX, 350, 'kirby');
     kirby.scale.setTo(0.25, 0.25);
     console.log('kirby', kirby);
+
+    //setup score texts
+    kirbyScoreText = game.add.text(kirby.body.x - 25, kirby.body.y -60, 'Kirby: 0', { fontSize: '14px', fill: '#000' });
+
 
     fruitsGroup = new Fruits(game); //all code below condensed into ^
 
@@ -244,6 +244,7 @@ var GameState = {
       kirby.body.velocity.x = kirby.speed;
     };
 
+    kirbyScoreText.position.x = kirby.body.x + 17;
   }
 
 };
