@@ -1,6 +1,7 @@
 
 var tween;
 var kirby;
+var kanye;
 var tween1;
 var tween2;
 var cursors;
@@ -165,6 +166,9 @@ var GameState = {
     game.load.image('spikeFruit', 'assets/spikeBall.png')
     game.load.spritesheet('scott', 'assets/scottpilgrim_test864x280.png', 864 / 8 , 280 / 2, 16)
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
+
+    game.load.spritesheet('kanye', 'assets/bear_animation_test.png',870/10,166, 20,1,1);
+
   },
 
   create:function(){
@@ -174,13 +178,20 @@ var GameState = {
     // game.physics.arcade.gravity.y = 100;
 
 
+
+
     kirby = new Player(game, game.world.centerX, 350, 'kirby');
     kirby.scale.setTo(0.25, 0.25);
     console.log('kirby', kirby);
-
     //setup score texts
     kirbyScoreText = game.add.text(kirby.body.x - 25, kirby.body.y -60, 'Kirby: 0', { fontSize: '14px', fill: '#000' });
 
+    kanye = new Player(game, 500, 350, 'kanye');
+
+    //to be added to the players prototype next
+    // var walkright = kanye.animations.add('walkright', [11, 12, 13, 14, 15, 16, 17, 18], 10 , true);
+    var walkleft = kanye.animations.add('walkleft', [0, 1, 2, 3, 4, 5, 6, 7] , 10, true);
+    var stand = kanye.animations.add('stand', [9] , 1, true);
 
     fruitsGroup = new Fruits(game); //all code below condensed into ^
 
@@ -212,6 +223,7 @@ var GameState = {
   update:function(){
 
     game.physics.arcade.overlap(fruitsGroup, kirby, fruitCatchHandler, fruitNoBounced, this)
+    game.physics.arcade.overlap(fruitsGroup, kanye, fruitCatchHandler, fruitNoBounced, this)
 
     fruitsGroup.forEach(function(fruit){
       if(fruit.alive){
@@ -236,13 +248,23 @@ var GameState = {
       fallingTimer += 2000;
     }
 
-    kirby.body.velocity.x = 0;
+    kanye.body.velocity.x = 0;
     if(cursors.left.isDown){
-      kirby.body.velocity.x = -kirby.speed;
+      kanye.scale.x = 1;
+
+      kanye.animations.play('walkleft');
+      kanye.body.velocity.x = -kanye.speed;
+
     };
     if(cursors.right.isDown){
-      kirby.body.velocity.x = kirby.speed;
+      kanye.body.velocity.x = kanye.speed;
+      kanye.scale.x = -1;
+      kanye.animations.play('walkleft');
     };
+
+    if(!cursors.right.isDown && !cursors.left.isDown){
+      kanye.animations.play('stand');
+    }
 
     kirbyScoreText.position.x = kirby.body.x + 17;
   }
@@ -258,7 +280,6 @@ function fruitFalls(){
   fruit = fruitsGroup.getRandom();
   //fruit.wiggleFruit();
   fruit.body.gravity.y = game.rnd.integerInRange(50, 200);
-  // console.log("fruitsGroup in falling", fruitsGroup);
 }
 
 function reviveFruit() {
