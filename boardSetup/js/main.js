@@ -1,4 +1,5 @@
 
+var fx;
 var tween;
 var kanye;
 var tween1;
@@ -118,6 +119,7 @@ Player.prototype.setSpeed = function(multiplier){
   }, this);
 };
 
+
 Fruits = function (game) {
   Phaser.Group.call(this, game);
   this.enableBody = true;
@@ -150,6 +152,7 @@ var GameState = {
     game.load.spritesheet('scott', 'assets/scottpilgrim_test864x280.png', 864 / 8 , 280 / 2, 16)
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.spritesheet('kanye', 'assets/bear_animation_test.png',870/10,166, 20,1,1);
+    game.load.audio('sfx', ['assets/audio/fx_mixdown.ogg']);
   },
 
   create:function(){
@@ -161,7 +164,6 @@ var GameState = {
     kanyeScoreText = game.add.text(16, 16, 'Kanye: 0', { fontSize: '14px', fill: '#000' });
 
     var walkleft = kanye.animations.add('walkleft', [0, 1, 2, 3, 4, 5, 6, 7] , 10, true);
-    //var stand = kanye.animations.add('stand', [9, 10, 11, 12, 13, 14, 15, 16] , 10, true);
     var stand = kanye.animations.add('stand', [15] , 1, true);
 
     //setup fruits group
@@ -176,10 +178,18 @@ var GameState = {
     //set up cursor responses
     cursors = game.input.keyboard.createCursorKeys(); //arrow keys
 
+    fx = game.add.audio('sfx');
+    fx.allowMultiple = true;
+
+    fx.addMarker('numkey', 9, 1, 1);
+    console.log("fx", fx);
+
+
+
   },
 
   update:function(){
-
+    // fx.play('numkey');
     game.physics.arcade.overlap(fruitsGroup, kanye, fruitCatchHandler, fruitNoBounced, this)
 
     fruitsGroup.forEach(function(fruit){
@@ -219,7 +229,6 @@ var GameState = {
     if(!cursors.right.isDown && !cursors.left.isDown){
       kanye.animations.play('stand');
     };
-
   }
 
 };
@@ -249,6 +258,8 @@ function reviveFruit() {
 function fruitCatchHandler(player, fruit){
   console.log("player in collision", player);
 
+  fx.play('numkey');
+
   if(fruit.key === "bombFruit"){
     var explosion = explosions.getFirstExists(false);
     explosion.reset(fruit.body.x, fruit.body.y);
@@ -273,5 +284,9 @@ function setupFruitExplosion (fruit) {
     fruit.anchor.y = 0.5;
     fruit.animations.add('kaboom');
 
+}
+
+function render() {
+    game.debug.soundInfo(music, 20, 32);
 }
 
