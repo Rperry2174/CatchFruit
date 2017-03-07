@@ -1,5 +1,6 @@
 
 var fx;
+var music;
 var tween;
 var kanye;
 var tween1;
@@ -158,6 +159,7 @@ var GameState = {
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.spritesheet('kanye', 'assets/bear_animation_test.png',870/10,166, 20,1,1);
     game.load.audio('sfx', ['assets/audio/fx_mixdown.ogg']);
+    game.load.audio('background_music', ['assets/audio/move_your_feet.mp3']);
   },
 
   create:function(){
@@ -183,16 +185,16 @@ var GameState = {
     //set up cursor responses
     cursors = game.input.keyboard.createCursorKeys(); //arrow keys
 
+    music = game.add.audio('background_music', .1);
+    music.play();
+
     fx = game.add.audio('sfx');
     fx.allowMultiple = true;
-
-    fx.addMarker('redFruit_sound', 9, 1, 1); //red apple
-    fx.addMarker('goldFruit_sound', 10, 1.0); //gold apple
-    fx.addMarker('bombFruit_sound', 12, 1, 2.5); //bomb apple
-
+    fx.addMarker('redFruit_sound', 9, 1, .2); //red apple
+    fx.addMarker('goldFruit_sound', 10, 1, .2); //gold apple
+    fx.addMarker('bombFruit_sound', 12, 1, .2); //bomb apple
 
     console.log("fx", fx);
-
 
 
   },
