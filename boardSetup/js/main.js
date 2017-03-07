@@ -53,6 +53,8 @@ RedFruit = function(game, x, y, name){
 
   this.value = 1;
   this.speedMultiplier = 1;
+  this.soundKey = 'redFruit_sound'
+
   console.log("RedFruit", this)
 };
 
@@ -68,6 +70,7 @@ GoldFruit = function(game, x, y, name){
 
   this.value = 5;
   this.speedMultiplier = 2;
+  this.soundKey = 'goldFruit_sound'
   console.log("GoldFruit", this)
 };
 
@@ -83,6 +86,8 @@ BombFruit = function(game, x, y, name){
 
   this.value = -5;
   this.speedMultiplier = 0.5;
+  this.soundKey = 'bombFruit_sound'
+
   console.log("BombFruit", this)
 };
 
@@ -181,7 +186,11 @@ var GameState = {
     fx = game.add.audio('sfx');
     fx.allowMultiple = true;
 
-    fx.addMarker('numkey', 9, 1, 1);
+    fx.addMarker('redFruit_sound', 9, 1, 1); //red apple
+    fx.addMarker('goldFruit_sound', 10, 1.0); //gold apple
+    fx.addMarker('bombFruit_sound', 12, 1, 2.5); //bomb apple
+
+
     console.log("fx", fx);
 
 
@@ -258,7 +267,7 @@ function reviveFruit() {
 function fruitCatchHandler(player, fruit){
   console.log("player in collision", player);
 
-  fx.play('numkey');
+  fx.play(fruit.soundKey);
 
   if(fruit.key === "bombFruit"){
     var explosion = explosions.getFirstExists(false);
