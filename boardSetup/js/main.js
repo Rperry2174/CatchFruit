@@ -195,12 +195,13 @@ var GameState = {
     fx.addMarker('bombFruit_sound', 12, 1, .2); //bomb apple
 
     console.log("fx", fx);
-
-
+    console.log('this window', window);
   },
 
   update:function(){
     // fx.play('numkey');
+    console.log("CACHE ----------", this.cache);
+
     game.physics.arcade.overlap(fruitsGroup, kanye, fruitCatchHandler, fruitNoBounced, this)
 
     fruitsGroup.forEach(function(fruit){
@@ -259,7 +260,8 @@ function reviveFruit() {
   //  Get a dead item
   var fruit = fruitsGroup.getFirstDead();
   if (fruit){
-    fruit.reset(game.world.randomX, 10);
+    // fruit.reset(game.world.randomX, 10);
+    fruit.reset(game.world.randomX, Math.floor(Math.random() * 30) + 10);
     fruit.body.gravity.y = 0;
     fruit.angle = 0;
     fruit.hasBounced = false;
